@@ -1,0 +1,59 @@
+package ua.lviv.lgs.service.impl;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import ua.lviv.lgs.dao.MagazineDao;
+import ua.lviv.lgs.dao.impl.MagazineDaoImpl;
+import ua.lviv.lgs.domain.Magazine;
+import ua.lviv.lgs.service.MagazineService;
+
+public class MagazineServiceImpl implements MagazineService{
+	
+	private static MagazineService magazineSerciceImpl;
+	private MagazineDao magazineDao;
+	
+	private MagazineServiceImpl() {
+		magazineDao = new MagazineDaoImpl();
+	}
+	
+	public static MagazineService getMagazineService() {
+		if(magazineSerciceImpl == null) {
+			magazineSerciceImpl = new MagazineServiceImpl();
+		}
+		return magazineSerciceImpl;
+	}
+
+	@Override
+	public Magazine create(Magazine t) {
+		return magazineDao.create(t);
+	}
+
+	@Override
+	public Magazine read(Integer id) {
+		return magazineDao.read(id);
+	}
+
+	@Override
+	public Magazine update(Magazine t) {
+		return magazineDao.update(t);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		magazineDao.delete(id);
+	}
+
+	@Override
+	public List<Magazine> readAll() {
+		return magazineDao.readAll();
+	}
+	
+	@Override
+	public Map<Integer, Magazine> readAllMap() {
+		return  readAll().stream().collect(Collectors.toMap(Magazine::getId, Function.identity()));
+	}
+
+}
